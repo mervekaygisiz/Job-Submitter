@@ -1,0 +1,42 @@
+#!/bin/bash
+# Standard error (stderr) filename
+#SBATCH -e $errorE
+
+
+# Number of cores (eq. 40)
+#SBATCH -n $numCores
+
+# Jobname
+#SBATCH --job-name=$jobName
+
+# Your email
+#SBATCH --mail-user=$email
+
+# Please do not change this section !!!
+#SBATCH --mail-type=ALL
+#SBATCH --tasks-per-node=$tasksPerNode
+
+export OMP_NUM_THREADS=1
+export PARALLEL=1
+module load qe/intel/openmpi/64/5.2
+# Unchangable section ended !!!
+
+ECHO="echo"
+PSEUDO_DIR="."
+TMP_DIR="tmp"
+PW_COMMAND="$QEDIR/pw.x"
+PP_COMMAND="$QEDIR/pp.x"
+PLOTRHO_COMMAND="$QEDIR/plotrho.x"
+BANDS_COMMAND="mpirun $QEDIR/bands.x"
+PLOTBAND_COMMAND="$QEDIR/plotband.x"
+DOS_COMMAND="mpirun $QEDIR/dos.x"
+PROJWFC_COMMAND="mpirun $QEDIR/projwfc.x"
+KVECS_COMMAND="$QEDIR/kvecs_FS.x "
+BANDS_FS_COMMAND="$QEDIR/bands_FS.x "
+
+DIAGO="david"
+
+INPUTFILE=$inputFile
+OUTPUTFILE=$outputFile
+
+mpirun -np $SLURM_NTASKS $PW_COMMAND $add < $INPUTFILE > $OUTPUTFILE 

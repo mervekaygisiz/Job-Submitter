@@ -1,0 +1,42 @@
+#!/bin/bash
+#matematik kutuphaneleri kullanilarak derlenen ABINIT icin kullanilmaktadir.
+#(1 veya daha fazla node ve 1 veya daha fazla cekirdek ile kullanilabilir)
+
+# Kuyruk adini giriniz
+#SBATCH -p $queue
+
+# Ekran ciktisi (stdout) dosyasinin adini giriniz
+#SBATCH -o $outputO
+
+# Ekran hata ciktisi (stderr) dosyasinin adini giriniz
+#SBATCH -e $errorE
+
+# Proje adi giriniz
+#SBATCH -A $projectName
+
+# Toplam cekirdek sayisini giriniz (ornek: 40)
+#SBATCH -n $numCores
+
+# Isin adi
+#SBATCH --job-name=$jobName
+
+# Eposta adresi
+#SBATCH --mail-user=$email
+
+# Girdi dosyasi
+INPUTFILE=$inputFile
+# Log dosyasi
+LOGFILE=$outputFile
+
+# Bu kismi degistirmeyiniz !!!
+# SBATCH --mail-type=ALL
+# SBATCH --tasks-per-node=20
+
+# Ilgili abinit modulunun yuklenmesi
+module load abinit/openmpi/64/7.10.4
+ABINIT="mpirun -np $SLURM_NTASKS abinit"
+# Abinit isinin calistirilmasi
+$ABINIT $add < $INPUTFILE >& $LOGFILE
+
+# Bu kismi degistirmeyiniz bitti !!!
+# Dosya sonu

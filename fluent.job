@@ -1,0 +1,35 @@
+#!/bin/bash
+# SLURM JOB SUBMISSION SCRIPT for ANSYS FLUENT
+# v.0.1
+
+# Example with 40 MPI tasks with 20 tasks per node.
+#SBATCH -p $queue
+#SBATCH -o $outputO
+#SBATCH -e $errorE
+
+# Project/Account
+#SBATCH -A $projectName
+
+# Number of MPI tasks
+#SBATCH -n $numCores
+
+# Number of tasks per node
+#SBATCH --tasks-per-node=$tasksPerNode
+
+# Job name
+#SBATCH --job-name=$jobName
+
+
+INPUTDIR=$inputDir
+INPUTFILE=$inputFile
+
+OUTPUTDIR=$outputDir
+OUTPUTFILE=$outputFile
+
+
+# Please do not change following lines
+#---------
+ARGS="3ddp -$ARCH -t$SLURM_NTASKS -$COMMUNICATOR -$CONNECTIONTYPE -g -$SMT"
+
+fluent $ARGS $add -i $INPUTDIR/$INPUTFILE> $OUTPUTDIR/$OUTPUTFILE
+#---------

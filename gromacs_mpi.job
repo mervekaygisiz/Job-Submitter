@@ -1,0 +1,21 @@
+#!/bin/bash
+# Example with 40 MPI tasks with 20 tasks per node.
+#SBATCH -p $queue
+#SBATCH -o $outputO
+#SBATCH -e $errorE
+
+# Project/Account
+#SBATCH -A $projectName
+
+# Number of MPI tasks
+#SBATCH -n $numCores
+
+# Number of tasks per node
+#SBATCH --tasks-per-node=$tasksPerNode
+
+# Job name
+#SBATCH --job-name=$jobName
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=$email
+module load gromacs/intel/64/4.6.5
+mpirun -np 40 mdrun_mpi_d -v -deffnm npt-200-K-0Gpa $add

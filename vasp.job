@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH -p $queue
+#SBATCH -o $outputO
+#SBATCH -e $errorE
+
+# Project/Account
+#SBATCH -A $projectName
+
+# Number of MPI tasks
+#SBATCH -n $numCores
+
+# Number of tasks per node
+#SBATCH --tasks-per-node=$tasksPerNode
+
+# Job name
+#SBATCH --job-name=$jobName
+
+# Loading module file of vasp
+module load vasp/intel/openmpi/64/5.3
+
+# Vasp command
+VASP=vasp_mpi
+
+#$VASP
+mpirun -np $SLURM_NTASKS $VASP $add

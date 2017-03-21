@@ -1,0 +1,41 @@
+#!/bin/bash
+#SBATCH -p $queue
+
+
+# Project/Account : 
+#SBATCH -A $projectName
+
+# Number of cores : 
+#SBATCH -n $numCores
+
+# Number of tasks per node: PLEASE DO NOT CHANGE THIS SECTION
+#SBATCH -o $outputO
+#SBATCH -e $errorE
+#SBATCH --tasks-per-node=$tasksPerNode
+# Number of tasks per node: END OF PLEASE DO NOT CHANGE THIS SECTION
+
+# Job name : 
+#SBATCH --job-name=$jobName
+
+# Input filename: FILENAME OF .sim FILE
+# NOTE 1: .sim FILE MUST BE IN THE SAME DIRECTORY IN YOUR CURRENT DIRECTORY
+# NOTE 2: YOU MUST WRITE THE FILENAME OF .sim FILE AFTER $PWD/
+
+INPUTFILE=$inputFile
+
+# + + + PLEASE DO NOT CHANGE THIS SECTION + + +#
+# BY SVRAS
+
+module load cd-adapco/star-ccm/10.02.012
+
+OUTPUTFILE=$outputFile
+machinefile=$SLURM_JOB_ID.machinefile
+tmpmachinefile=$SLURM_JOB_ID.machinefile.tmp
+srun hostname > $machinefile
+sort $machinefile > $tmpmachinefile
+mv $tmpmachinefile $machinefile
+
+starccm+ -np $SLURM_NTASKS -machinefile $machinefile -rsh ssh $add -batch $INPUTFILE >& $OUTPUTFILE
+
+rm -f $machinefile
+# + + + END OF PLEASE DO NOT CHANGE THIS SECTION + + +#

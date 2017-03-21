@@ -1,0 +1,19 @@
+#!/bin/bash
+# Example with 40 MPI tasks with 20 tasks per node.
+#SBATCH -p $queue
+#SBATCH -o $outputO
+#SBATCH -e $errorE
+
+# Project/Account
+#SBATCH -A $projectName
+
+# Number of MPI tasks
+#SBATCH -n $numCores
+
+# Number of tasks per node
+#SBATCH --tasks-per-node=$tasksPerNode
+
+# Job name
+#SBATCH --job-name=$jobName
+
+mpirun --mca btl openib,self $add $inputFile 

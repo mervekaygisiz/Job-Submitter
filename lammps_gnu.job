@@ -1,0 +1,36 @@
+#!/bin/bash
+# Queue/partition name
+#SBATCH -p $queue
+
+# Project/Account
+#SBATCH -A $projectName
+
+
+# Standard output (stdout) filename
+#SBATCH -o $outputO
+
+# Standard error (stderr) filename
+#SBATCH -e $errorE
+
+
+# Number of cores (eq. 40)
+#SBATCH -n $numCores;
+
+# Jobname
+#SBATCH --job-name=$jobName
+
+# Your email
+#SBATCH --mail-user=$email
+
+# Please do not change this section !!!
+#SBATCH --mail-type=ALL
+#SBATCH --tasks-per-node=20
+
+module load lammps/openmpi/64/15May15
+# Unchangable section ended !!!
+
+# Input filename
+#INPUTFILE= 6pBD-CO2.in
+INPUTFILE= $inputFile
+
+mpirun -np $SLURM_NTASKS $LAMMPSEXE $add < $INPUTFILE 
